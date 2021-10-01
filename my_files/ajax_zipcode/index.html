@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Get GitHub User Profile</title>
+    <!-- CSS only -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU"
+      crossorigin="anonymous"
+    />
+  </head>
+  <body>
+    <div class="container-fluid">
+      <form class="w-50">
+        <div id="entry" class="form-group">
+          <label for="city">GitHub Username</label>
+          <input
+            id="github-username"
+            class="form-control"
+            type="text"
+            name="github-username"
+            placeholder="Enter Username"
+          />
+          <button id="ajax-button" type="button" class="btn btn-primary mt-2">
+            Submit
+          </button>
+        </div>
+      </form>
+
+      <div id="profile" class="mt-2"></div>
+    </div>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ"
+      crossorigin="anonymous"
+    ></script>
+    <script>
+
+      var api = "https://api.github.com/users/";
+
+      function findProfile() {
+        let button = document.getElementById('ajax-button');
+        let buttonText = button.innerHTML.trim();
+
+        var username = document.getElementById("github-username");
+        var url = api + username.value;
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', url, true);
+        xhr.onreadystatechange = function () {
+          if(xhr.readyState < 4) {
+            showLoading(1, button, buttonText);
+          }
+          if(xhr.readyState == 4 && xhr.status == 200) {
+            showLoading(0, button, buttonText);
+            outputProfile(xhr.responseText);
+          } else if(xhr.readyState == 4 && xhr.status == 404) {
+            showLoading(0, button, buttonText);
+          }
+        }
+        xhr.send();
+      }
+
+      function showLoading(state, button, buttonText) {
+        var loading = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>' +
+        '<span class="sr-only">'+ buttonText +'</span>';
+        if (state) {
+          button.setAttribute("disabled", true);
+          button.innerHTML = loading;
+        } else {
+          button.removeAttribute("disabled");
+          button.innerHTML = buttonText;
+        }
+      }
+    
+
+      function outputProfile(data) {
+        var target = document.getElementById('profile');
+        var json = JSON.parse(data);
+        console.log(json);
+        let profile = `
+          <img src="${json.avatar_url}" class="rounded img-thumbnail"/>
+          <h1>${json.name}</h1>
+          <p>${json.bio}</p>
+          <p>Visit my profile <a href="${json.html_url}" target="_blank">here</a></p>
+        `
+        target.innerHTML = profile;
+
+      }
+
+      var button = document.getElementById("ajax-button");
+      button.addEventListener("click", findProfile);
+    </script>
+  </body>
+</html>

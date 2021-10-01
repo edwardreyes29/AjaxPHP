@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ajax Text</title>
+
+  <!-- CSS only -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+</head>
+<body>
+  <div class="container-fluid">
+    <div id="main">
+      This is the original text when the page first loads.
+    </div>
+  
+    <button id="ajax-button" type="button" class="btn btn-primary">Update content with Ajax</button>
+  </div>
+  <!-- JavaScript Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
+  <script>
+
+    function showLoadingButton(state, button) {
+      var loading = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>' +
+      '<span class="sr-only">Loading...</span>';
+      if (state) {
+        button.setAttribute("disabled", true);
+        button.innerHTML = loading;
+      } else {
+        button.removeAttribute("disabled");
+        button.innerHTML = "Update content with Ajax";
+      }
+    }
+    
+    function replaceText() {
+      var target = document.getElementById("main");
+      var xhr = new XMLHttpRequest();
+      xhr.open('GET', 'new_content.txt', true);
+      xhr.onreadystatechange = function () {
+        console.log('readyState: ', xhr.readyState);
+        if(xhr.readyState == 2) {
+          showLoadingButton(true, button);
+        }
+        if (xhr.readyState == 4 && xhr.status == 200) {
+          showLoadingButton(false, button);
+          target.innerHTML = xhr.responseText;
+        }
+      }
+      xhr.send();
+    }
+
+    var button = document.getElementById("ajax-button");
+    button.addEventListener("click", replaceText);
+  </script>
+</body>
+</html>
