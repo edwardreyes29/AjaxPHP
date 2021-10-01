@@ -13,7 +13,24 @@
   <button id="ajax-button" type="button">Update content with Ajax</button>
 
   <script>
-    
+    const replaceText = () => {
+      let target = document.getElementById('main');
+      let xhr = new XMLHttpRequest();
+      xhr.open('GET', 'new_content.php', true);
+      xhr.onreadystatechange = () => {
+        console.log('radyState: ' + xhr.readyState);
+        if(xhr.readyState == 2) {
+          target.innerHTML = 'Loading...';
+        }
+        if(xhr.readyState == 4 && xhr.status == 200) {
+          target.innerHTML = xhr.responseText;
+        }
+      }
+      xhr.send();
+    }
+
+    let button = document.getElementById('ajax-button');
+    button.addEventListener('click', replaceText);
   </script>
 </body>
 </html>
