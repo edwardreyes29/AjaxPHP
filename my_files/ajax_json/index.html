@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div id="main">
+    This is the original text when the page first loads.
+  </div>
+  <button id="ajax-button" type="button">Update content with Ajax</button>
+
+  <script>
+    const replaceText = () => {
+      let target = document.getElementById('main');
+      let xhr = new XMLHttpRequest();
+      xhr.open('GET', 'new_content.php', true);
+      xhr.onreadystatechange = () => {
+        console.log('radyState: ' + xhr.readyState);
+        if(xhr.readyState == 2) {
+          target.innerHTML = 'Loading...';
+        }
+        if(xhr.readyState == 4 && xhr.status == 200) {
+          target.innerHTML = xhr.responseText;
+        }
+      }
+      xhr.send();
+    }
+
+    let button = document.getElementById('ajax-button');
+    button.addEventListener('click', replaceText);
+  </script>
+</body>
+</html>
