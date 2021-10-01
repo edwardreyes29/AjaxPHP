@@ -31,3 +31,8 @@ $user = new User();
 json_encode($user); // '{"first_name": "Joe"', "last_name": "Public"}'
 
 ```
+
+# ch 4
+
+## 4.1
+---

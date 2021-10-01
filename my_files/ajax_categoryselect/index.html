@@ -4,34 +4,48 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <title>Ajax Category Select</title>
+  <style>
+    #subcategory-select {
+      display: none;
+    }
+  </style>
 </head>
 <body>
-  <div id="main">
-    This is the original text when the page first loads.
+  <div id="form">
+    <p>Which category are you interested in?</p>
+    <select id="category-select">
+      <option disabled selected>Please select</option>
+      <option value="1">Furniture</option>
+      <option value="2">Lighting</option>
+      <option value="3">Accessories</option>
+    </select>
+    <select id="subcategory-select"></select>
   </div>
-  <button id="ajax-button" type="button">Update content with Ajax</button>
-
   <script>
-    const replaceText = () => {
-      let target = document.getElementById('main');
+    const updateSubcategories = () => {
+      let cat_select = document.getElementById("category-select");
+      let subcat_select = document.getElementById("subcategory-select");
+
+      let cat_id = cat_select.options[cat_select.selectedIndex].value;
+
+      let url = 'subcategories.php?category_id=' + cat_id;
+      console.log(url);
+
       let xhr = new XMLHttpRequest();
-      xhr.open('GET', 'new_content.php', true);
+      xhr.open('GET', url, true);
       xhr.onreadystatechange = () => {
-        console.log('radyState: ' + xhr.readyState);
-        if(xhr.readyState == 2) {
-          target.innerHTML = 'Loading...';
-        }
         if(xhr.readyState == 4 && xhr.status == 200) {
-          let json = JSON.parse(xhr.responseText);
-          target.innerHTML = json.long;
+          subcat_select.innerHTML = xhr.responseText;
+          subcat_select.style.display = 'inline';
         }
       }
       xhr.send();
     }
 
-    let button = document.getElementById('ajax-button');
-    button.addEventListener('click', replaceText);
+    let cat_select = document.getElementById('category-select');
+    cat_select.addEventListener('change', updateSubcategories);
+
   </script>
 </body>
 </html>
