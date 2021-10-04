@@ -1,6 +1,11 @@
 <?php
   session_start();
+  // $_SESSION['favorites'] = [];
   if(!isset($_SESSION['favorites'])) { $_SESSION['favorites'] = []; }
+
+  function is_favorite($id) {
+    return in_array($id, $_SESSION['favorites']);
+  }
 ?>
 
 <!DOCTYPE html>
@@ -29,10 +34,16 @@
     // echo join(', ', $_SESSION['favorites']); 
   ?>
   <div class="container-fluid">
-    <?php echo "v.1.6"; ?>
+    <?php echo "v.1.8"; ?>
     <div id="blog-posts">
       <div class="card mb-2 mt-2" style="width: 50rem;">
-        <div id="blog-post-101" class="blog-post card-body">
+        <div id="blog-post-101" class="blog-post card-body
+          <?php 
+            if(is_favorite(101)) { 
+              echo 'favorite'; 
+            }
+          ?>" 
+        >
           <span class="favorite-heart">&hearts;</span>
           <h3 class="card-title">Blog Post 101</h3>
           <p class="card-text">
@@ -43,7 +54,13 @@
       </div>
 
       <div class="card mb-2" style="width: 50rem;">
-        <div id="blog-post-102" class="blog-post card-body">
+        <div id="blog-post-102" class="blog-post card-body
+          <?php 
+            if(is_favorite(102)) { 
+              echo 'favorite'; 
+            }
+          ?>"
+        >
           <span class="favorite-heart">&hearts;</span>
           <h3 class="card-title">Blog Post 102</h3>
           <p class="card-text">
@@ -54,7 +71,13 @@
       </div>
 
       <div class="card mb-2" style="width: 50rem;">
-        <div id="blog-post-103" class="blog-post card-body">
+        <div id="blog-post-103" class="blog-post card-body
+          <?php 
+            if(is_favorite(103)) { 
+              echo 'favorite'; 
+            }
+          ?>"
+        >
           <span class="favorite-heart">&hearts;</span>
           <h3 class="">Blog Post 103</h3>
           <p>
