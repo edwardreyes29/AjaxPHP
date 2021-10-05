@@ -32,7 +32,18 @@ json_encode($user); // '{"first_name": "Joe"', "last_name": "Public"}'
 
 ```
 
-# ch 4
+# ch 5
 
-## 4.1
+## 5.1
 ---
+
+### Form
+* calculate volume from length, widht, and height
+* Use client-side Javascript with Ajax
+* User log in
+* Contact us, feedback
+* Polls, surveys
+* File upload
+* In-place content editing
+
+
